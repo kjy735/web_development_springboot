@@ -15,9 +15,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
         스프링 부트에서의 계층
             1) 프레젠테이션(Presentation)
-                HTTP 요청을 받고 이 요청을 비지니스 계층으로 전송하는 역할 -> Controller가
+                HTTP 요청을 받고 이 요청을 비지니스 계층으로 전송하는 역할 -> Controller 가
                     프레젠테이션 계층 역할
-                TestCintroller 클래스와 같은 것을 의미하며 스프링 부트 내의 여러 개가 있을 수 있음
+                TestController 클래스와 같은 것을 의미하며 스프링 부트 내의 여러 개가 있을 수 있음
+
             2) 비지니스(Business)
                 모든 비지니스 로직 처리
                     * 비지니스 로직 : 서비스를 만들기 위한 로직을 의미하며, 웹 사이트에서 벌어지는
@@ -30,9 +31,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 모든 데이터베이스 관련 로직을 처리. 이 과정에서 데이터베이스에 접근하는
                     DAO(추후 수업 예정) 객체를 사용할 '수도' 있음.
                         * DAO - 데이터베이스 계층과 상호작용하기 위한 객체라고 이해하면 편합니다 일단은.
-                        -> Repository가 퍼시스턴스 계층의 역할을 함
+                        -> Repository 가 퍼시스턴스 계층의 역할을 함
 
-         계층은 개념의 영역이고 Controller, Service, Repoditory는 실제 구현을 위한 영역
+         계층은 개념의 영역이고 Controller, Service, Repository 는 실제 구현을 위한 영역
             -> 추후 수업(아마 목요일) 예정입니다.
 
     스프링 부트 프로젝트 디렉토리 구성
@@ -53,10 +54,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
             지시 사항
             main 디렉토리 구성하기
-                : main 디렉토리 내에 java와 resources로 구성돼 있음. 여기에 아직 추가하지 못했던
+                : main 디렉토리 내에 java 와 resources 로 구성돼 있음. 여기에 아직 추가하지 못했던
                     스프링 부트 프로젝트의 구성 요소를 추가합니다.
-                01 단계 - HTML과 같은 뷰 관련 파일(chapter07에서 수업 예정)을 넣을 templates 디렉토리
-                    resources 우클릭 -> new directory -> tamplates
+                01 단계 - HTML 과 같은 뷰 관련 파일(chapter07에서 수업 예정)을 넣을 templates 디렉토리
+                    resources 우클릭 -> new directory -> templates
                 02 단계 - static 디렉토리 JS, CSS, 이미지와 같은 정적 파이릉ㄹ 넣는 용도로 사용
                     -> 이미 만들었으므로 생략합니다.
                 03 단계 -> 스프링 부트 설정을 할 수 있는 application.yml 파일을 생성
@@ -83,19 +84,39 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
            테스트 코드에서만 사용, 메인 애플리케이션에서는 사용하지 않음
         runtimeOnly : 런타임에만 필요한 의존성 지정, 컴파인 시에는 사용하지 않지만,
             애플리케이션을 실행할 때 필요한 라이브러리 설정
-        complieOnly : 컴파일 시에만 필요, 런타임에는 포함되지 않아야 하는 의존성 지정
+        compileOnly : 컴파일 시에만 필요, 런타임에는 포함되지 않아야 하는 의존성 지정
         annotationProcessor : 컴파일 시에 애너테이션을 처리할 때 사용하는 도구의 의존성 지정
 
     지시 사항
         프레젠테이션, 서비스, 퍼시스턴스 계층 만들기
 
-            1. 프레젠테이션 계층에 속하는 컨트롤러 관련 코드 작성 -> TestController가 있으므로 생략
-            2. 비지니스 계층 코드 TestController와 같은 위치에 TestService.java 생성하세요.
+            1. 프레젠테이션 계층에 속하는 컨트롤러 관련 코드 작성 -> TestController 가 있으므로 생략
+            2. 비지니스 계층 코드 TestController 와 같은 위치에 TestService.java 생성하세요.
             3. 퍼시스턴스 계층 코드 작성 -> 같은 위치에 Member.java 설정하세요 -> 실제 DB에 접근하는 코드 작성
             4. 매핑 작업에는 '인터페이스' 파일이 필요, MemberRepository 인터페이스를 같은 위치에 생성하세요.
 
 
         작동을 확인해보겠습니다.
+
+            01 단계 - resources 폴더에 sql 문 하나 추가할겁니다.
+                resources 우클릭 -> new -> file -> data.sql
+
+            02 단계 - 이제는 기존에 만들어둔 application.yml 파일을 수정할겁니다.
+
+            03 단계 - 서버 실행 후에 ctrl + f 눌러서 create 검생해서 table 이 생성됐는지 확인
+
+            04 단계 - Postman 에서 HTTP 요청을 시도해봅니다
+                1) 포스트맨 실행
+                2) HTTP 매서드를 GET 으로 설정하고 URLdp
+                    http://lacalhost:8080/test로 설정(TestController.java 확인)
+                3) SEND 버튼 누릅니다
+                4) 200 0K인지 확인
+
+      HTTP 요청 <---> TestController <---> TestService <---> MemberRepository <---> Database
+      url:/test      프레젠테이션 계층      비즈니스 계층        퍼시스턴스 계증        데이터베이스
+
+      chapter04 프로젝트 생성
+
  */
 @SpringBootApplication
 public class SpringbootDeveloperApplication {

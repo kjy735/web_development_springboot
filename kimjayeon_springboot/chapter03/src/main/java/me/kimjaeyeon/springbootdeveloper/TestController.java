@@ -12,9 +12,9 @@ public class TestController {
     @Autowired  // TestService Bean 주입
     TestService testService;
 
-    @GetMapping("/test")
+    @GetMapping("/test")    // 주소지 는 /test이다.
     public List<Member> getAllMembers() {
-        List<Member> members = testService.getAllMembers();
+        List<Member> members = testService.getAllMembers(); // 메소드명
         return members;
 
     }
