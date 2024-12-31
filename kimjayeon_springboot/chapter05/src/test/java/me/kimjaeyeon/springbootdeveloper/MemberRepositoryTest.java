@@ -1,10 +1,12 @@
 package me.kimjaeyeon.springbootdeveloper;
 
+import jdk.internal.vm.annotation.IntrinsicCandidate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -141,4 +143,38 @@ class MemberRepositoryTest {
         // then                             // 2L에 해당하는 객체를 찾았을 때, empty인지 확인
         assertThat(memberRepository.findById(2L).isEmpty()).isTrue();
     }
+    /*
+        수정 메서드
+        ex) id가 2인 멤버의 이름을 "BC"로 바꾼다고 가정했을 때,
+        
+        수정 관련 SQL문
+        -> UPDATE member 
+           SET name = 'BC' 
+           WHERE id = 2;
+           
+        JPA에서 데이터를 수정하는 방식은 추후에 SQL에서 배우게 될 트랜잭션
+        내에서 데이터를 수행해야 합니다.
+                -> 메서드만 사용하는 것이 아니라 @Transactional 애너테이션을
+                    메서드에 추가해야 합니다.
+
+                    Member.java
+           
+     */
+
+    @Sql("/insert-member.sql")
+    @Test
+    void update() {
+        // given    -> id 2인 객체를 가지고 와서 member라는 객체명에 저장 / 현재 name = "B"
+        Member member = memberRepository.findById(2L).get();
+
+        // when
+        member.changeName("BC");
+
+        // then
+        assertThat(memberRepository.findById(2L).get().getName()).isEqualTo("BC");
+    }
+    /*
+        그런데 지금 이상의 메서드에는 @Transactional 애너테이션이 존재하지 않음.
+
+     */
 }
