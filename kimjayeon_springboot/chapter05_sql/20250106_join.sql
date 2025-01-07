@@ -155,7 +155,7 @@ SELECT u.id, u.username, u.phone, o.user_id, od.order_id, od.product_id
 -- users와 orders를 하나로 결합하여 출력해보자(단, 회원 정보가 없는 주문 정보도 출력).
 
 SELECT *
-	FROM USERS U right join ORDERS O on u.ID = o.USER_ID 
+	FROM USERS U RIGHT JOIN ORDERS O ON u.ID = o.USER_ID 
 	;
 
 -- RIGHT JOIN은 기본적으로 LEFT JOIN과 기능은 동일합니다. LEFT JOIN에서는 왼쪽에 위치한
@@ -174,8 +174,8 @@ SELECT *
 
 -- users와 orders의 '모든 가능한 행 조합'을 만들어 내는 쿼리를 작성합니다.
 SELECT *
-	FROM USERS U cross join ORDERS O	-- 모든 가능한 행 조합에서 -> CROSS JOIN을 유추
-	order by u.ID ;
+	FROM USERS U CROSS JOIN ORDERS O	-- 모든 가능한 행 조합에서 -> CROSS JOIN을 유추
+	ORDER BY u.ID ;
 
 -- CROSS JOIN - 두 테이블 간의 집합을 조합해 만들 수 있는 모든 경우의 수를 생성하는 방식으로,
 	-- 카테시안 제곱(Cartesian Product)을 의미함.
@@ -198,38 +198,38 @@ SELECT *
 -- 연습 문제
 -- 1. users와 staff를 참고하여 회원 중 직원인 사람의 회원 id, 이메일(username), 거주도시(city), 거주 국가(country),
 -- 성(last_name), 이름(first_name)을 한 화면에 출력하세요.
-select u.id, u.username, u.city, u.country, s.last_name, s.first_name
-	FROM USERS U inner join STAFF S  on u.ID  = s.USER_ID 
+SELECT u.id, u.username, u.city, u.country, s.last_name, s.first_name
+	FROM USERS U INNER JOIN STAFF S  ON u.ID  = s.USER_ID 
 	;
 
 -- 2. staff와 orders를 참고하여 직원 아이디가 3번, 5번인 직원의 담당 주문을 출력하세요(단,
 -- 직원 아이디, 직원 성, 주문 아이디, 주문일자만 출력하세요)	-> where절 사용해야한다.
 SELECT s.id, s.last_name, o.id, o.order_date
-	from STAFF S left join ORDERS O on s.id = o.STAFF_ID 	-- 어차피 where절로 필터링 할거라서 left join써도 무방
+	FROM STAFF S LEFT JOIN ORDERS O ON s.id = o.STAFF_ID 	-- 어차피 where절로 필터링 할거라서 left join써도 무방
 	WHERE s.ID = 3 OR s.ID = 5
 -- 	WHERE s.id IN (3, 5)
 	;
 
 -- 3. users와 orders를 참고하여 회원 국가별 주문 건수를 내림차순으로 출력하세요.
-SELECT u.country, COUNT(distinct o.ID) 
-	FROM USERS U left join ORDERS O on u.id = o.USER_ID 
+SELECT u.country, COUNT(DISTINCT o.ID) 
+	FROM USERS U LEFT JOIN ORDERS O ON u.id = o.USER_ID 
 	GROUP BY u.COUNTRY					-- 국가별로 확인한다고 했기 때문에
-	order BY count(distinct o.ID) DESC
+	ORDER BY count(DISTINCT o.ID) DESC
 	;
 
 -- 4. orders와 orderdetails, products를 참고하여 회원 아이디별 주문 금액의 총합을 정상 가격과
 -- 학인 가격 기준으로 각각 구하세요(단, 정산 가격 주문 금액의 총합 기준으로 내림차순으로 정렬하세요.)
-select o.USER_ID
-	, SUM(p.PRICE * od.QUANTITY)  as sumPrice
-	, SUM(p.DISCOUNT_PRICE * od.QUANTITY) as sumDiscountPrice 
-	from 
+SELECT o.USER_ID
+	, SUM(p.PRICE * od.QUANTITY)  AS sumPrice
+	, SUM(p.DISCOUNT_PRICE * od.QUANTITY) AS sumDiscountPrice 
+	FROM 
 		ORDERS O 
-	left join
+	LEFT JOIN
 		ORDERDETAILS od
-	on o.ID = od.ORDER_ID 
+	ON o.ID = od.ORDER_ID 
 	INNER JOIN 
 		PRODUCTS P 
-	on od.PRODUCT_ID = p.ID 
+	ON od.PRODUCT_ID = p.ID 
 	GROUP BY o.USER_ID 			-- 회원 아이디별로 정렬하라고 했기 때문에
 	ORDER BY SUM(p.PRICE * od.QUANTITY) DESC 
 	;
