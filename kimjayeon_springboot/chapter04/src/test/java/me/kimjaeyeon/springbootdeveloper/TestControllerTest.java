@@ -39,7 +39,7 @@ class TestControllerTest {
 
     // 위의 부분은 객체 생성
     // 밑의 부분은 메서드
-    @BeforeEach
+    @BeforeEach // 테스트 실행 전 실행하는 메서드
     public void mockMvcSetup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();       // builder().build()의 응용 형태
@@ -51,6 +51,7 @@ class TestControllerTest {
         memberRepository.deleteAll();   // test하고나서 리포지토리 안에 있는걸 다 지움
     }
 
+
     @DisplayName("getAllMembers: 아티클 조회에 성공한다.")
     @Test
     public void getAllMembers() throws Exception {  // throws Exception :
@@ -61,15 +62,16 @@ class TestControllerTest {
         // maybeags/web_development_java에 c15_casting에 CentralControll.java / Main.java 확인
 
         // when
+            // ResultActions 객체: andExpect()제공 perfom(): 요청 전송
         final ResultActions result = mockMvc.perform(get(url)   // (1)
                 .accept(MediaType.APPLICATION_JSON));           // (2)
-
+            // accept(): 요청을 보낼때 어떤 타입으로 응답을 받을지 결정
         // then
-        result.andExpect(status().isOk())                       // (3)
-                                                                // (4)
+        result.andExpect(status().isOk()) // isOk(): 응답코드가 OK(200인지 확인) // (3)
+                        // jsonPath("$[0].${필드명}): JSON 응답값의 값을 가져옴   // (4)
                 .andExpect(jsonPath("$[0].id").value(savedMembers.getId())) // expression: 표현식
                 .andExpect(jsonPath("$[0].name").value(savedMembers.getName()));
-    }
+    }                      // 기대합니다(0번째 배열에 들어있는 객체의 id와 name값을 가저오고 . 저장된 값과 같은지)
 }
 
 /*

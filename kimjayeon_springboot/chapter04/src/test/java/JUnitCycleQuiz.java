@@ -33,12 +33,12 @@ public class JUnitCycleQuiz {
         Bye!
      */
 
-    @BeforeEach // test시행 전에 실행
+    @BeforeEach // test시행 전에 매번 실행
     public void hello() {
         System.out.println("Hello!");
     }
 
-    @AfterAll
+    @AfterAll   // 전체 테스트 마치고 종료하기 전에 한번만 실행
     public static void bye() {  // static으로!
         System.out.println("Bye!");
     }

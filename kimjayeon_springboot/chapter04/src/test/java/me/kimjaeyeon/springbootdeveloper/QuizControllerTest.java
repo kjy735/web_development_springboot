@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.xml.transform.Result;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,12 +36,18 @@ class QuizControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    // Jackson 라이브러리에서 제공하는 클래스
+    // 객체와 JSON간의 변환을 처리
 
     @BeforeEach
     public void mockMvcSetUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
+
+
+
+
 
     // 여기서 퀴즈 문제 낼건데
     @DisplayName("quiz(): GET /quiz?code=1 이면 응답 코드는 201, 응답 본문은 Created!를 반환한다.")
@@ -50,11 +59,13 @@ class QuizControllerTest {
         // when
         final ResultActions result = mockMvc.perform(get(url)
                 .param("code", "1")     // values가 "1"인 이유는 JSON이라서
+                // 요청 파라미터 "code"       값
         );
         //then
         result.andExpect(status().isCreated())
+                        // 응답코드 . 201 Created
                 .andExpect(content().string("Created!"));
-    }
+    }                   // 응답 본문 . "Created!"
 
     @DisplayName("quiz() : GET /quiz?code=2 이면 응답코드는 400, 응답 본문은 Bad Request!를 반환한다.")
     @Test
@@ -67,9 +78,10 @@ class QuizControllerTest {
         );
 
         // then
+                        // 응답코드 . 400 Bad Request
         result.andExpect(status().isBadRequest())
                 .andExpect(content().string("Bad Resquest!"));
-    }
+    }                   // 응답 본문 . "Bad Request!"
 
     @DisplayName("quiz() : POST / quiz?code=1 이면 응답 코드는 403, 응답 본문은 Forbidden!을 반환한다.")
     @Test
@@ -102,6 +114,7 @@ class QuizControllerTest {
         );
 
         //then
+                        // 응답코드 . 201 OK
         result.andExpect(status().isOk())
                 .andExpect(content().string("OK!"));
     }
