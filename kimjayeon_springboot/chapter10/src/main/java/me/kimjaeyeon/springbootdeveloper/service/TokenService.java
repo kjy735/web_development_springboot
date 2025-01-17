@@ -26,11 +26,5 @@ public class TokenService {
 
         return tokenProvider.generateToken(user, Duration.ofHours(2));
     }
-    /*
-        이상에서 토큰 생성 및 유효성 검증 로직 작성 -> 실제로 토큰을 발급받는 API를 생성
 
-        토큰 생성 요청 및 응답을 담당할 DTO
-        CreateAccessTokenRequest.java
-        CreateAccessTokenResponse.java
-     */
 }

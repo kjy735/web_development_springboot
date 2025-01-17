@@ -1,17 +1,5 @@
-package me.kimjaeyeon.springbootdeveloper.controller;
-/*
-    given
-        - 테스트 유저를 생성, jjwt 라이브러리 이용해서 리프레시 토큰 만들어
-            DB에 저장, 토큰 생성 API의 요청 본문에 토큰을 포함하여 요청 객체를 생성
+package springbootdeveloper.controller;
 
-    when
-        - 토큰 추가 API에 요청을 보냅니다. 이때 요청 타입은 JSON이며,
-            given 절에서 미리 만들어둔 객체를 요청 본문으로 함께 보냅니다
-
-    then
-        - 응답 코드가 201 Created인지 확인하고 응답으로 온 액세스 토큰이
-            비어있는지 않은지 확인
- */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.kimjaeyeon.springbootdeveloper.config.jwt.JwtFactory;
@@ -28,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.metadata.HsqlTableMetaDataProvider;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
