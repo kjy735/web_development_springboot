@@ -21,8 +21,6 @@ spring:
             scope:
               - email
               - profile
-
-
 jwt:
   issuer: maybeags@gmail.com
   secret_key: study-springboot
